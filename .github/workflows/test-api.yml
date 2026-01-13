@@ -8,7 +8,7 @@ jobs:
     node-js-api:
         runs-on: ubuntu-latest
         services:
-          web-app:
+          app:
             image: gbigbi210141989/node-js-api-web-app:latest
             ports:
               - 3001:3000
