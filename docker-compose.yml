@@ -4,7 +4,7 @@ services:
     ports:
       - 3001:3000
     environment:
-      - MONGO_HOSTNAME=mongo
+      - MONGO_HOSTNAME=db-mongo
     depends_on: 
       - db-mongo
     networks:
