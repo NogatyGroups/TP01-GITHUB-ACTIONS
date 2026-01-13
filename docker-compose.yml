@@ -4,12 +4,12 @@ services:
     ports:
       - 3001:3000
     environment:
-      - MONGO_HOSTNAME=db-mongo
+      - MONGO_HOSTNAME=mongo
     depends_on: 
-      - db-mongo
+      - mongo
     networks:
       - mongo-net
-  db-mongo:
+  mongo:
     image: mongo:latest
     ports:
       - "27017:27017"
