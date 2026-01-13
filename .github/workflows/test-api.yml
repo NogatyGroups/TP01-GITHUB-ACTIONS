@@ -7,34 +7,39 @@ on:
 jobs:
     node-js-api:
         runs-on: ubuntu-latest
+        container: ubuntu-20.04
         services:
           app:
             image: gbigbi210141989/node-js-api-web-app:latest
-            ports:
-              - 3001:3000
+            #ports:
+            #  - 3001:3000
             env:
               MONGO_HOSTNAME: mongo
           mongo:
             image: mongo:latest
-            ports:
-              - "27017:27017"
+            #ports:
+            #  - "27017:27017"
             volumes:
               - mongo-data:/data/db
         steps:
+            - name: Install curl
+              run: |
+                apt -y update
+                apt -y install curl
             - name: Dumps services context
               run: echo '${{toJson(job.services)}}'
             - name: Post a user
               run: |
                 curl -X POST \
-                http://localhost:3001/api/users \
+                http://app:3000/api/users \
                 -H 'Content-Type: application/json' \
                 -d '{
-                "username": "Pierre",
-                "address": "66 avenu bamba"
+                "username": "Houlouwolo",
+                "address": "6 avenu damandan"
                 }'
             - name: Get Users
               run: |
-                curl http://localhost:3001/api/users
+                curl http://app:3000/api/users
 
                 
     
