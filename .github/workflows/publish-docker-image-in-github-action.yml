@@ -1,4 +1,4 @@
-name: Publish docker images in github
+name: Publish docker images in github Conatiner Registry
 run-name: "Publish docker images in github @${{github.actor}}, event:${{github.event_name}}"
 on:
   release:
@@ -6,6 +6,9 @@ on:
 jobs:
   push-to-dockerhub:
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
     steps:
       - uses: actions/checkout@v6
       - name: Login in docker hub
@@ -13,11 +16,19 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWD }}
+      - name: Login in github container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghr.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWD }}
       - name: Extract metadata
         id: metadata
         uses: docker/metadata-action@v5
         with:
-          images: gbigbi210141989/node-js-api-web-app
+          images: |
+            gbigbi210141989/node-js-api-web-app
+            ghcr.io/${{ github.repository }}
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
