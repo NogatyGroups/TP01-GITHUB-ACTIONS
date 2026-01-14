@@ -1,45 +1,46 @@
 name: Test NodeJS Apps API
 run-name: "Test NodeJS Apps API @${{github.actor}}, event:${{github.event_name}}"
 on:
-    push:
-    workflow_dispatch: 
+  push:
+  workflow_dispatch: 
 
 jobs:
-    node-js-api:
-        runs-on: ubuntu-latest
-        container: ubuntu-latest
-        services:
-          app:
-            image: gbigbi210141989/node-js-api-web-app:latest
-            #ports:
-            #  - 3001:3000
-            env:
-              MONGO_HOSTNAME: mongo
-          mongo:
-            image: mongo:latest
-            #ports:
-            #  - "27017:27017"
-            volumes:
-              - mongo-data:/data/db
-        steps:
-            - name: Install curl
-              run: |
-                apt -y update
-                apt -y install curl
-            - name: Dumps services context
-              run: echo '${{toJson(job.services)}}'
-            - name: Post a user
-              run: |
-                curl -X POST \
-                http://app:3000/api/users \
-                -H 'Content-Type: application/json' \
-                -d '{
-                "username": "Houlouwolo",
-                "address": "6 avenu damandan"
-                }'
-            - name: Get Users
-              run: |
-                curl http://app:3000/api/users
+  node-js-api:
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:24.04
+    services:
+      app:
+        image: gbigbi210141989/node-js-api-web-app:latest
+        ports:
+          - 3001:3000
+        env:
+          MONGO_HOSTNAME: mongo
+      mongo:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+        volumes:
+          - mongo-data:/data/db
+    steps:
+      - name: Install curl
+        run: |
+          apt -y update
+          apt -y install curl
+      - name: Dumps services context
+        run: echo '${{toJson(job.services)}}'
+      - name: Post a user
+        run: |
+          curl -X POST \
+          http://app:3000/api/users \
+          -H 'Content-Type: application/json' \
+          -d '{
+          "username": "Houlouwolo",
+          "address": "6 avenu damandan"
+          }'
+      - name: Get Users
+        run: |
+          curl http://app:3000/api/users
 
-                
-    
+volumes:
+  mongo-data:
