@@ -1,8 +1,10 @@
 name: Publish docker images in github
 run-name: "Publish docker images in github @${{github.actor}}, event:${{github.event_name}}"
 on:
-  release:
-    types: [published]
+  #release:
+  #  types: [published]
+  push:
+
 
 jobs:
   push-to-dockerhub:
